@@ -28,9 +28,23 @@ abstract class Styles {
     height: 1.3,
   );
 
+  static const textStyle16 = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: Colors.grey,
+  );
+
   static const textStyle20 = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.bold,
     color: Colors.white,
+  );
+
+  static const textStyle30 = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.w900,
+    color: Colors.white,
+    fontFamily: kGtSectraFine,
+    letterSpacing: 1.2,
   );
 }
