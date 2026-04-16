@@ -1,8 +1,12 @@
 import 'package:bookly_app/core/utils/assets.dart';
 import 'package:bookly_app/core/utils/styles.dart';
+import 'package:bookly_app/core/utils/widgets/custom_error.dart';
+import 'package:bookly_app/core/utils/widgets/custom_loading_indicator.dart';
+import 'package:bookly_app/features/home/presentation/views/manger/featured_books_cubit/featured_books_cubit.dart';
 import 'package:bookly_app/features/home/presentation/views/widgets/best_seller_book_card.dart';
 import 'package:bookly_app/features/home/presentation/views/widgets/featured_book_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
@@ -28,17 +32,27 @@ class HomeViewBody extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
-          child: SizedBox(
-            height: 220,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              itemCount: featuredBooks.length,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(right: 16),
-                child: FeaturedBookCard(imageUrl: featuredBooks[index]),
-              ),
-            ),
+          child: BlocBuilder<FeaturedBooksCubit, FeaturedBooksState>(
+            builder: (context, state) {
+              if (state is FeaturedBooksSuccess) {
+                return SizedBox(
+                  height: 220,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    itemCount: featuredBooks.length,
+                    itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: FeaturedBookCard(imageUrl: featuredBooks[index]),
+                    ),
+                  ),
+                );
+              } else if (state is FeaturedBooksFailure) {
+                return Center(child: CustomError(errMessage: state.errMessage));
+              } else {
+                return CustomLoadingIndicator();
+              }
+            },
           ),
         ),
 
